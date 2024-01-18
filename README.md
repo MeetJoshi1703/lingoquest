@@ -56,8 +56,8 @@
 
   <h3>Feedback and Support</h3>
 
-  <p>We value your feedback! If you encounter any issues, have suggestions for improvement, or simply want to share
-      your success stories, reach out to us at <code>support@lingoquest.com</code>.</p>
+  <p>I value your feedback! If you encounter any issues, have suggestions for improvement, or simply want to share
+      your Ideas, reach out to me at <code>joshimeet479@gmail.com</code>.</p>
 
   <h3>Connect with Me</h3>
 
