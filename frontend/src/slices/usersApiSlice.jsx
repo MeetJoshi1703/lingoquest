@@ -16,6 +16,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 url:`${USERS_URL}`,
                 method:'POST',
                 body:data,
+                credentials:"include"
             }),
         }),
         logout:builder.mutation({
@@ -25,6 +26,15 @@ export const usersApiSlice = apiSlice.injectEndpoints({
 
             }),
         }),
+        getUsersByProf: builder.query({
+            query: (language) => ({
+              url: `${USERS_URL}/proficiency/${language}`,
+            }),
+            providesTags: (result, error, language) => [{ type: 'User', language }],
+            keepUnusedDataFor: 5,
+        }),
+      
+        /*
         profile:builder.mutation({
             query:(data)=>({
                 url:`${USERS_URL}/profile`,
@@ -59,7 +69,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
                 body:data,
             }),
             invalidatesTags:['Users']
-        })
+        })*/
     }),
 
 });
@@ -68,9 +78,5 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useRegisterMutation,
-    useProfileMutation,
-    useGetUsersQuery,
-    useDeleteUserMutation,
-    useGetUserDetailsQuery,
-    useUpdateUserMutation,
+    useGetUsersByProfQuery
 }= usersApiSlice; 

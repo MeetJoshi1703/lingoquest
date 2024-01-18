@@ -6,9 +6,8 @@ const getExerciseByLang = asyncHandler(async (req, res) => {
     const language = req.params.lang; // Get language from query parameters
     // console.log(language);
     
-    
     try {
-      const exercises = await Exercise.find({ language });
+      const exercises = await Exercise.find({ language }).select('-answer');
       res.json(exercises);
     } catch (error) {
       console.error('Error fetching exercises:', error);
@@ -20,7 +19,7 @@ const getExerciseByLang = asyncHandler(async (req, res) => {
     const exerciseId = req.params.id; // Get exercise ID from the request parameters
   
     try {
-      const exercise = await Exercise.findById(exerciseId);
+      const exercise = await Exercise.findById(exerciseId).select('-answer');
   
       if (!exercise) {
         // If exercise with the given ID is not found, return a 404 response

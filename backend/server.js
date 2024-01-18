@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import connectDB from "./db/db.js";
 import exerciseRoutes from './routes/exerciseRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import scoreRoutes from './routes/scoreRoutes.js';
+import scoreRoutes from './routes/scoreRoute.js';
 const port = process.env.PORT || 8000;
 dotenv.config();    
 
@@ -14,10 +14,15 @@ connectDB();
 const app = express();
 
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }));
+  
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(cookieParser());
+
 
 
 app.use('/api/exercise',exerciseRoutes);

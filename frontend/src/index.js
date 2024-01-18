@@ -11,6 +11,9 @@ import PrivateRoute from './components/PrivateRoute.jsx';
 import HomeScreen from './screens/HomeScreen.jsx';
 import LoginScreen from './screens/LoginScreen.jsx';
 import RegisterScreen from './screens/RegisterScreen.jsx'
+import LanguageScreen from './screens/LanguageScreen.jsx';
+import DisplayExercise from './screens/DisplayExercise.jsx';
+import QuizScreen from './screens/QuizScreen.jsx';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,6 +21,12 @@ const router = createBrowserRouter(
       <Route path='/' index={true} element={<HomeScreen />} />
       <Route path='/login' index={true} element={<LoginScreen />} />
       <Route path='/register' index={true} element={<RegisterScreen />} />
+
+      <Route path='' element={<PrivateRoute/>} >
+      <Route path='/select-language' index={true} element={<LanguageScreen />} />    
+      <Route path='/language/:lang' index={true} element={<DisplayExercise />} />    
+      <Route path='/quiz/:id' index={true} element={<QuizScreen />} />    
+      </Route>
 
 
 

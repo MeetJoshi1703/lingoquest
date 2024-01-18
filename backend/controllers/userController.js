@@ -16,7 +16,7 @@ const authUser = asyncHandler(async (req,res)=>{
 
         res.status(200).json({
             _id:user._id,
-            name:user.name,
+            name:user.username,
             email:user.email,
             isAdmin:user.isAdmin,
         })  
@@ -79,7 +79,7 @@ const getUsersByProficiency = asyncHandler(async (req, res) => {
   
     try {
       
-      const users = await User.find({}).sort({ [`proficiencyLevel.${language}`]: -1 });
+      const users = await User.find({}).select('-password').sort({ [`proficiencyLevel.${language}`]: -1 });
       res.json(users);
     } catch (error) {
       console.error('Error fetching users by proficiency level:', error);
@@ -93,7 +93,6 @@ const getUsersByProficiency = asyncHandler(async (req, res) => {
 //@desc Get User Profile
 //@route GET/api/users/profile
 //@access Private
-/*
 const getUserProfile = asyncHandler(async (req,res)=>{
     const user = await User.findById(req.user._id);
 
@@ -102,7 +101,8 @@ const getUserProfile = asyncHandler(async (req,res)=>{
             _id:user._id,
             name:user.name,
             email:user.email,
-            isAdmin:user.isAdmin
+            isAdmin:user.isAdmin,
+            proficiencyLevel:user.proficiencyLevel
         });
     }else{
         res.status(404)
@@ -110,14 +110,16 @@ const getUserProfile = asyncHandler(async (req,res)=>{
     }
 });
 
+
 //@desc Update User Profile
 //@route PUT/api/users/profile
 //@access Private
 const updateUserProfile = asyncHandler(async (req,res)=>{
+    
     const user = await User.findById(req.user._id);
 
     if(user){
-        user.name = req.body.name || user.name;
+        user.username = req.body.name || user.name;
         user.email = req.body.email || user.email;
         
         if(req.body.password){
@@ -128,7 +130,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
 
         res.status(200).json({
             _id:updateUser._id,
-            name:updateUser.name,
+            username:updateUser.username,
             email:updateUser.email,
             isAdmin:updateUser.isAdmin
         });
@@ -139,6 +141,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
     }
 });
 
+/*
 //@desc get users
 //@route GET/api/users
 //@access Private/admin
@@ -212,7 +215,9 @@ export {
     authUser,
     registerUser,
     logoutUser,
-    getUsersByProficiency
+    getUsersByProficiency,
+    getUserProfile,
+    updateUserProfile
 }
 
 
