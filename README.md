@@ -62,8 +62,8 @@
   <h3>Connect with Me</h3>
 
   <ul>
-      <li>Linkedin: <a href="https://www.linkedin.com/in/meet-joshi-350814227/" target="_blank">@LingoQuestOfficial</a></li>
-      <li>Portfolio: <a href="https://meetjoshi1703.github.io/Portfolio/" target="_blank">LingoQuest</a></li>
+      <li>Linkedin: <a href="https://www.linkedin.com/in/meet-joshi-350814227/" target="_blank">Linkedin</a></li>
+      <li>Portfolio: <a href="https://meetjoshi1703.github.io/Portfolio/" target="_blank">Portfolio Website</a></li>
   </ul>
 
   <h3>Happy Learning!</h3>
