@@ -34,32 +34,54 @@ const QuizScreen = () => {
 
     if (selectedAnswer !== null) {
       try {
-        const res = completeExercise({
+        const { data, error } = await completeExercise({
           id,
           userId: userInfo._id,
           userAnswer: selectedAnswer,
           timeTaken: 30 - timeRemaining,
         });
 
-        if (res === true) {
-          alert('Correct Answer !!');
-        } else {
-          alert(error);
-        }
-        setTimeRemaining(30);
+        if (data?.isCorrect) {
+          
+          // Pause the timer after submitting data
+          setIsTimerPaused(true);
 
-        // Pause the timer after submitting data
-        setIsTimerPaused(true);
+          if (data.alreadyCompleted) {
+            alert('You have already completed this exercise.');
+          } else{
+          // Display a success message if the answer is correct
+          setShowAlert(true);
+          alert('Correct Answer !!');
+          }
+          // Navigate to another route (adjust the path accordingly)
+          navigate(`/language/${exerciseData.language}`);
+        } else {
+          // Display an error message if the answer is incorrect
+          
+          // Pause the timer after submitting data
+          setIsTimerPaused(true);
+
+          setShowAlert(true);
+          alert('Incorrect Answer. Please try again.');
+  
+          // Restart the timer
+          setSelectedAnswer(null)
+          setTimeRemaining(30);
+          setIsTimerPaused(false);
+        }
+
       } catch (error) {
         // Handle error if the mutation fails
         console.error('Error completing exercise:', error.message);
+        setShowAlert(true);
+        alert('Failed to complete exercise. Please try again.');
       }
     } else {
       // Handle the case where no answer is selected
-      console.warn('Please select an answer before submitting.');
+      setShowAlert(true);
+      alert('Please select an answer before submitting.');
     }
   };
-
   const handleTryAgain = () => {
     setShowAlert(true);
     setTimeRemaining(30);

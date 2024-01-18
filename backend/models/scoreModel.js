@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+//updated everytime user submits a successful answer
+
 const scoreSchema = mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -11,6 +13,7 @@ const scoreSchema = mongoose.Schema({
     ref: 'Exercise',
     required: true,
   },
+  //timetaken to solve problem-helps calculate proficiency level as per the exercise difficulty
   timeTaken:{
     type:Number,
     required:true

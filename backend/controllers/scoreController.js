@@ -4,13 +4,11 @@ import Exercise from "../models/exerciseModel.js";
 import Score from "../models/scoreModel.js";
 
 
-// Controller to complete an exercise
+// Controller to complete an exercise - updates the score when user submits right answer
 const completeExercise = asyncHandler(async (req, res) => {
-  const {userId} =  req.body; // Assuming you use authentication middleware
   const exerciseId = req.params.id;
-  const { userAnswer, timeTaken } = req.body; // Assuming the client sends the user's answer and time taken in the request body
-  
-  const timeTakeninNumber = timeTaken
+  const { userAnswer, timeTaken, userId } = req.body;
+
   try {
     // Retrieve the exercise and user objects
     const exercise = await Exercise.findById(exerciseId);
@@ -22,9 +20,10 @@ const completeExercise = asyncHandler(async (req, res) => {
     }
 
     const existingScore = await Score.findOne({ userId, exercise: exerciseId });
+
     // Check if the user has already completed this exercise
     if (existingScore) {
-      return res.status(400).json({ message: 'Exercise already completed by the user' });
+      return res.json({ isCorrect: true, alreadyCompleted: true })
     }
 
     // Compare the user's answer with the actual answer
@@ -32,39 +31,71 @@ const completeExercise = asyncHandler(async (req, res) => {
 
     // Update the user's progress and score if the answer is correct
     if (isCorrect) {
-      // Update the user's proficiency level (assuming you have a proficiency system)
-      const proficiencyIncrement = calculateProficiencyIncrement(timeTakeninNumber,exercise.difficulty);
+      // Function to update proficiency based on difficulty and time taken
+      const proficiencyIncrement = calculateProficiencyIncrement(timeTaken, exercise.difficulty);
       const currentProficiency = user.proficiencyLevel.get(exercise.language) || 0;
-      user.proficiencyLevel.set(exercise.language, currentProficiency+proficiencyIncrement);
-        
+      user.proficiencyLevel.set(exercise.language, currentProficiency + proficiencyIncrement);
       await user.save();
-
 
       // Create a new Score document
       const newScore = new Score({
         userId,
         exercise: exerciseId,
-        timeTaken:timeTakeninNumber,
+        timeTaken,
       });
 
       // Save the new Score document
       await newScore.save();
+
+      // Return a response indicating that the answer is correct
+      res.json({ isCorrect: true });;
+    } else {
+      // Return a response indicating that the answer is incorrect
+      res.json({ isCorrect: false });;
     }
 
-    // Return a response indicating whether the answer was correct
-    res.json({ message: isCorrect ? true : false });
   } catch (error) {
     console.error('Error completing exercise:', error);
     res.status(500).json({ message: 'Failed to complete exercise' });
   }
 });
+  
+const resetUserExercise = asyncHandler(async (req, res) => {
 
+    const userId = req.params.id;
+  
+    try {
+      
+      const user = await User.findById(userId);
+  
+      
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // Find and delete all Score records with the given user ID
+      // Reset the proficiency map to 0
+      user.proficiencyLevel = new Map();
+
+      await user.save();
+      
+      const deletedScores = await Score.deleteMany({ userId });
+  
+      res.json({ message: `Successfully reset exercises for user ${userId}. Deleted ${deletedScores.deletedCount} scores.` });
+
+    } catch (error) {
+      console.error('Error resetting user exercises:', error);
+      res.status(500).json({ message: 'Failed to reset user exercises' });
+    }
+  });
+  
+
+//function to calculate proficiency 
 const calculateProficiencyIncrement = (timeTaken, exerciseDifficulty) => {
-    // Your logic for calculating proficiency increment based on time and exercise difficulty goes here
-    // This is just a simple example; adjust it based on your actual scoring system
-    const maxTime = 60; // Maximum time allowed in seconds
-    const minProficiencyIncrement = 0.5; // Minimum proficiency increment
-    const maxProficiencyIncrement = 2; // Maximum proficiency increment
+  
+    const maxTime = 30;
+    const minProficiencyIncrement = 0.5; 
+    const maxProficiencyIncrement = 2; 
   
     // Calculate a linear progression of proficiency increment based on time
     const timeBasedIncrement = minProficiencyIncrement + (maxProficiencyIncrement - minProficiencyIncrement) * (1 - timeTaken / maxTime);
@@ -77,36 +108,7 @@ const calculateProficiencyIncrement = (timeTaken, exerciseDifficulty) => {
   
     return combinedIncrement;
   };
-  
-  const resetUserExercise = asyncHandler(async (req, res) => {
-    const userId = req.user._id;
-  
-    try {
-      // Find the user
-      const user = await User.findById(userId);
-  
-      // Check if the user exists
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-      }
-  
-      // Find and delete all Score records with the given user ID
-      // Reset the proficiency map to 0
-      user.proficiencyLevel = new Map();
 
-      // Save the updated user
-      await user.save();
-      
-      const deletedScores = await Score.deleteMany({ userId });
-  
-      // Optionally, you can also reset the user's proficiency levels or perform any other cleanup
-  
-      res.json({ message: `Successfully reset exercises for user ${userId}. Deleted ${deletedScores.deletedCount} scores.` });
-    } catch (error) {
-      console.error('Error resetting user exercises:', error);
-      res.status(500).json({ message: 'Failed to reset user exercises' });
-    }
-  });
 
 
 

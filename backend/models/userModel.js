@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import bcrypt from 'bcryptjs';
 
+//Usermodel to store information necessary for authentication 
 const userSchema = mongoose.Schema({
   email: {
     type: String,
@@ -20,6 +21,7 @@ const userSchema = mongoose.Schema({
     required:true,
     default:false
   },
+  //key:value pairs to store user proficiency in each language e.g., en:2.5 , es:1 , fr:2 etc
   proficiencyLevel: {
     type: Map,
     of: Number,
@@ -27,6 +29,7 @@ const userSchema = mongoose.Schema({
   },
 });
 
+// Method to compare entered password with the stored hashed password
 userSchema.methods.matchPassword = async function(enteredPassword){
   return await bcrypt.compare(enteredPassword,this.password);
 }
@@ -36,8 +39,9 @@ userSchema.pre('save',async function (next){
       next();
   }
 
+   // Generate a salt and hash the password using bcrypt
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password,salt); 
+  this.password =await bcrypt.hash(this.password,salt); 
 })
 
 

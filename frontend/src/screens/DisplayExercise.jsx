@@ -21,7 +21,7 @@ const DisplayExercise = () => {
     return <div>Error fetching exercises: {error.message}</div>;
   }
 
-  // Check if data is available before mapping
+  
   if (!data || data.length === 0) {
     return <div>No exercises available for this language.</div>;
   }

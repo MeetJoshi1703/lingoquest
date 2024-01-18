@@ -1,5 +1,6 @@
 import express from 'express';
 const router = express.Router();
+
 import {
   getExerciseByLang,
   getExerciseById,
@@ -10,13 +11,13 @@ import {
 } from '../controllers/exerciseController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
-// Routes
+
 router.route('/lang/:lang').get(getExerciseByLang);
 
-router.route('/:id').get(getExerciseById).put(protect, updateExercise).delete(protect, deleteExercise);
+router.route('/:id').get(getExerciseById).put( updateExercise).delete( deleteExercise);
 
-router.route('/difficulty/:difficulty').get(protect,getExercisesByDifficulty);
+router.route('/difficulty/:difficulty').get(getExercisesByDifficulty);
 
-router.route('/').post(protect, createExercise);
+router.route('/').post( createExercise);
 
 export default router;

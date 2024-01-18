@@ -39,18 +39,20 @@ const registerUser = asyncHandler(async (req,res)=>{
         throw new Error('User already exists');
     }    
 
+    
+
     const user = await User.create({
         username,
         email,
-        password
+        password,
     });
 
     if(user){
-        generateToken(res,user._id);
+        generateToken(res,user._id);    
 
         res.status(201).json({
             _id:user._id,
-            username:user.name,
+            username:user.username,
             email:user.email,
             isAdmin:user.isAdmin
         });
@@ -141,7 +143,7 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
     }
 });
 
-/*
+
 //@desc get users
 //@route GET/api/users
 //@access Private/admin
@@ -210,14 +212,22 @@ const updateUser = asyncHandler(async (req,res)=>{
     }
 
 });
-*/
+
 export {
+    //accesible by users
     authUser,
     registerUser,
     logoutUser,
     getUsersByProficiency,
     getUserProfile,
-    updateUserProfile
+    updateUserProfile,
+
+
+    //admin routes
+    getUsers,
+    getUserByID,
+    updateUser,
+    deleteUser
 }
 
 

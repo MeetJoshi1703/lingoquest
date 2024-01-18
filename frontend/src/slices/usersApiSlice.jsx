@@ -13,10 +13,10 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         }),
         register:builder.mutation({
             query:(data)=>({
-                url:`${USERS_URL}`,
+                url:`${USERS_URL}/`,
                 method:'POST',
                 body:data,
-                credentials:"include"
+                
             }),
         }),
         logout:builder.mutation({
@@ -33,43 +33,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             providesTags: (result, error, language) => [{ type: 'User', language }],
             keepUnusedDataFor: 5,
         }),
-      
-        /*
-        profile:builder.mutation({
-            query:(data)=>({
-                url:`${USERS_URL}/profile`,
-                method:'PUT',
-                body:data,
-            }),
-        }),
-        getUsers:builder.query({
-            query:()=>({
-                url:USERS_URL
-            }),
-            providesTags:['Users'],
-            keepUnusedDataFor:5
-        }),
-        deleteUser:builder.mutation({
-            query:(userId)=>({
-                url:`${USERS_URL}/${userId}`,
-                method:'DELETE',
-
-            })
-        }),
-        getUserDetails:builder.query({
-            query:(userId)=>({  
-                url:`${USERS_URL}/${userId}`,
-            }),
-            keepUnusedDataFor:5,
-        }),
-        updateUser:builder.mutation({
-            query:(data)=>({
-                url:`${USERS_URL}/${data.userId}`,
-                method:'PUT',
-                body:data,
-            }),
-            invalidatesTags:['Users']
-        })*/
+        
     }),
 
 });

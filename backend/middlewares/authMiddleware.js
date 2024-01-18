@@ -7,23 +7,17 @@ const protect = asyncHandler(async (req,res,next)=>{
 
     //Read JWT from cookie
     token = req.cookies.jwt;
-    
-    console.log('Token:', token);
-
 
     if(token){
         try {
             const decoded = jwt.verify(token,process.env.JWT_SECRET);
-            console.log('Decoded userId:', decoded.userId); // Add this line
             req.user = await User.findById(decoded.userId).select('-password');
-                        
             next();
         } catch (error) {
             console.log(error);
             res.status(401);
             throw new Error('Not Authorized, token failed');    
         }
-
     }
     else{
         res.status(401);

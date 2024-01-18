@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import dotenv from 'dotenv';
 import usersData from "./data/users.js";
 import exerciseData from "./data/exercise.js";
