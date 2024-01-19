@@ -59,16 +59,26 @@ const completeExercise = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Failed to complete exercise' });
   }
 });
+
+const getCompletedExercisesByUser = asyncHandler(async (req, res) => {
+  const userId = req.body.id; 
+
+  try {
+    // Find all Score records with the given user ID
+    const completedExercises = await Score.find({ userId }).populate('exercise');
+    res.json({ completedExercises });
+
+  } catch (error) {
+    console.error('Error fetching completed exercises by user:', error);
+    res.status(500).json({ message: 'Failed to fetch completed exercises by user' });
+  }
+});
+
   
 const resetUserExercise = asyncHandler(async (req, res) => {
-
     const userId = req.params.id;
-  
     try {
-      
       const user = await User.findById(userId);
-  
-      
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
@@ -76,11 +86,8 @@ const resetUserExercise = asyncHandler(async (req, res) => {
       // Find and delete all Score records with the given user ID
       // Reset the proficiency map to 0
       user.proficiencyLevel = new Map();
-
       await user.save();
-      
       const deletedScores = await Score.deleteMany({ userId });
-  
       res.json({ message: `Successfully reset exercises for user ${userId}. Deleted ${deletedScores.deletedCount} scores.` });
 
     } catch (error) {
@@ -90,7 +97,7 @@ const resetUserExercise = asyncHandler(async (req, res) => {
   });
   
 
-//function to calculate proficiency 
+//function to calculate proficiency used in completeExercise controller
 const calculateProficiencyIncrement = (timeTaken, exerciseDifficulty) => {
   
     const maxTime = 30;
@@ -114,5 +121,6 @@ const calculateProficiencyIncrement = (timeTaken, exerciseDifficulty) => {
 
   export {
     completeExercise,
+    getCompletedExercisesByUser,
     resetUserExercise
   }

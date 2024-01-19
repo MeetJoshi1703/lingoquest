@@ -3,7 +3,7 @@ import Exercise from '../models/exerciseModel.js';
 
 // Get exercises by language
 const getExerciseByLang = asyncHandler(async (req, res) => {
-  const language = req.params.lang; // Get language from query parameters
+  const language = req.params.lang; 
 
   try {
     const exercises = await Exercise.find({ language }).select('-answer');
@@ -17,18 +17,14 @@ const getExerciseByLang = asyncHandler(async (req, res) => {
 
 // Get exercise by ID
 const getExerciseById = asyncHandler(async (req, res) => {
-  const exerciseId = req.params.id; // Get exercise ID from the request parameters
+  const exerciseId = req.params.id; 
 
   try {
     const exercise = await Exercise.findById(exerciseId).select('-answer');
-
     if (!exercise) {
-      // If exercise with the given ID is not found, return a 404 response
       return res.status(404).json({ message: 'Exercise not found' });
     }
-
     res.json(exercise);
-    
   } catch (error) {
     console.error('Error fetching exercise by ID:', error);
     res.status(500).json({ message: 'Failed to fetch exercise by ID' });
@@ -48,6 +44,12 @@ const getExercisesByDifficulty = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Failed to fetch exercises by difficulty' });
   }
 });
+
+
+
+
+
+/*---------<<Controlers for admin to perform CRUD operation on question exercise>>----------*/
 
 // Create a new exercise
 const createExercise = asyncHandler(async (req, res) => {
@@ -94,11 +96,13 @@ const deleteExercise = asyncHandler(async (req, res) => {
   }
 });
 
-// Exporting the functions for use in other files
+
 export {
   getExerciseByLang,
   getExerciseById,
   getExercisesByDifficulty,
+
+  // Admin Routes
   createExercise,
   updateExercise,
   deleteExercise

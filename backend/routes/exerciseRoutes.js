@@ -5,11 +5,15 @@ import {
   getExerciseByLang,
   getExerciseById,
   getExercisesByDifficulty,
+
+  // Admin Routes
   createExercise,
   updateExercise,
   deleteExercise
+
 } from '../controllers/exerciseController.js';
-import { protect } from '../middlewares/authMiddleware.js';
+
+import { protect,admin } from '../middlewares/authMiddleware.js';
 
 
 router.route('/lang/:lang').get(getExerciseByLang);

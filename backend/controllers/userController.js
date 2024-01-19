@@ -2,7 +2,7 @@ import asyncHandler from '../middlewares/asyncHandler.js';
 import User from '../models/userModel.js';
 import generateToken from '../utils/generateToken.js';
 
-//@desc Auth user and get token
+//@description: Auth user and get token
 //@route GET/api/users/login
 //@access Public
 const authUser = asyncHandler(async (req,res)=>{
@@ -76,11 +76,12 @@ const logoutUser = asyncHandler(async (req,res)=>{
     res.status(200).json({message:'Logged out successfully'})
 });
 
+//@desc get users by proficiency level in descending order for ranking
+//@route GET/api/users/proficiency/:lang
+//@access Private
 const getUsersByProficiency = asyncHandler(async (req, res) => {
     const language = req.params.language;
-  
     try {
-      
       const users = await User.find({}).select('-password').sort({ [`proficiencyLevel.${language}`]: -1 });
       res.json(users);
     } catch (error) {
@@ -96,7 +97,7 @@ const getUsersByProficiency = asyncHandler(async (req, res) => {
 //@route GET/api/users/profile
 //@access Private
 const getUserProfile = asyncHandler(async (req,res)=>{
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.body.id);
 
     if(user){
         res.status(200).json({
@@ -118,7 +119,7 @@ const getUserProfile = asyncHandler(async (req,res)=>{
 //@access Private
 const updateUserProfile = asyncHandler(async (req,res)=>{
     
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.body.id);
 
     if(user){
         user.username = req.body.name || user.name;
@@ -143,6 +144,11 @@ const updateUserProfile = asyncHandler(async (req,res)=>{
     }
 });
 
+
+
+
+
+/*---------------------------<<Controlers for admin>>--------------------------*/
 
 //@desc get users
 //@route GET/api/users
