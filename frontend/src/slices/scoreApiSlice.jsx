@@ -11,10 +11,17 @@ export const scoreApiSlice = apiSlice.injectEndpoints({
         body:data,
       }),
       invalidatesTags:['Score'],
-    })
+    }),
+    getCompletedExercisesByUser: builder.query({
+      query: (data) =>({ 
+       url: `${SCORES_URL}/?id=${data}`
+      }),
+    }),
+
   })
 })
 
 export const{
   useCompleteExerciseMutation,
+  useGetCompletedExercisesByUserQuery
 }=scoreApiSlice

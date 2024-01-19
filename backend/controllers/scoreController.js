@@ -61,7 +61,7 @@ const completeExercise = asyncHandler(async (req, res) => {
 });
 
 const getCompletedExercisesByUser = asyncHandler(async (req, res) => {
-  const userId = req.body.id; 
+  const userId = req.query.id; 
 
   try {
     // Find all Score records with the given user ID
