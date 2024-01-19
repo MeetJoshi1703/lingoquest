@@ -33,6 +33,12 @@ export const usersApiSlice = apiSlice.injectEndpoints({
             providesTags: (result, error, language) => [{ type: 'User', language }],
             keepUnusedDataFor: 5,
         }),
+        getUserById: builder.query({
+            query: (data) => ({
+                url: `${USERS_URL}/profile?id=${data}`,
+              }),
+            keepUnusedDataFor: 5,
+        }),
         
         
     }),
@@ -43,5 +49,6 @@ export const {
     useLoginMutation,
     useLogoutMutation,
     useRegisterMutation,
-    useGetUsersByProfQuery
+    useGetUsersByProfQuery,
+    useGetUserByIdQuery
 }= usersApiSlice; 

@@ -97,7 +97,7 @@ const getUsersByProficiency = asyncHandler(async (req, res) => {
 //@route GET/api/users/profile
 //@access Private
 const getUserProfile = asyncHandler(async (req,res)=>{
-    const user = await User.findById(req.body.id);
+    const user = await User.findById(req.query.id);
 
     if(user){
         res.status(200).json({
