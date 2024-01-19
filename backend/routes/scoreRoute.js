@@ -11,9 +11,9 @@ import { protect } from '../middlewares/authMiddleware.js';
 
 
 
-router.route('/',getCompletedExercisesByUser);
+router.route('/').get(getCompletedExercisesByUser);
 
-router.route('/:id').post(completeExercise).put('/:id',resetUserExercise);
+router.route('/:id').post(completeExercise).put(resetUserExercise);
 
 
 
