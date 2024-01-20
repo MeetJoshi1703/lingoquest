@@ -16,12 +16,12 @@ import {
 import { protect,admin } from '../middlewares/authMiddleware.js';
 
 
-router.route('/lang/:lang').get(getExerciseByLang);
+router.route('/lang/:lang').get(protect,getExerciseByLang);
 
-router.route('/:id').get(getExerciseById).put( updateExercise).delete( deleteExercise);
+router.route('/:id').get(protect,getExerciseById).put(protect,admin,updateExercise).delete(protect,admin,deleteExercise);
 
 router.route('/difficulty/:difficulty').get(getExercisesByDifficulty);
 
-router.route('/').post( createExercise);
+router.route('/').post(protect,admin,createExercise);
 
 export default router;

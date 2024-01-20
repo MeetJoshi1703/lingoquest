@@ -13,8 +13,8 @@ export const scoreApiSlice = apiSlice.injectEndpoints({
       invalidatesTags:['Score'],
     }),
     getCompletedExercisesByUser: builder.query({
-      query: (data) =>({ 
-       url: `${SCORES_URL}/?id=${data}`
+      query: () =>({ 
+       url: `${SCORES_URL}/`
       }),
     }),
 

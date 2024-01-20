@@ -19,7 +19,7 @@ const QuizScreen = () => {
 
   const [completeExercise, { isLoading: loadingSolution }] = useCompleteExerciseMutation();
 
-  const { userInfo } = useSelector((state) => state.auth);
+  
 
   useEffect(() => {
     if (exerciseData) {
@@ -36,7 +36,6 @@ const QuizScreen = () => {
       try {
         const { data, error } = await completeExercise({
           id,
-          userId: userInfo._id,
           userAnswer: selectedAnswer,
           timeTaken: 30 - timeRemaining,
         });

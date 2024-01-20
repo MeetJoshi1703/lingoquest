@@ -9,10 +9,8 @@ const ProfileScreen = () => {
   const [completedExercises, setCompletedExercises] = useState([]);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const { data: userData, error: userError } = useGetUserByIdQuery(userInfo?._id);
-  const { data: completedData, error: completedError } = useGetCompletedExercisesByUserQuery(
-    userInfo?._id
-  );
+  const { data: userData, error: userError } = useGetUserByIdQuery();
+  const { data: completedData, error: completedError } = useGetCompletedExercisesByUserQuery();
 
   useEffect(() => {
     if (userData) {

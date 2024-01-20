@@ -4,7 +4,7 @@ const generateToken = (res,userId)=>{
     const token = jwt.sign({userId:userId},process.env.JWT_SECRET,{expiresIn:'30d'});
 
     //set jwt as http-only cookie   
-    res.cookie('jwt',token,{
+    res.cookie('token',token,{
         httpOnly:true,
         secure:true,
         sameSite:'none',

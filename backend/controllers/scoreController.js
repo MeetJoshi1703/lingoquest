@@ -7,7 +7,8 @@ import Score from "../models/scoreModel.js";
 // Controller to complete an exercise - updates the score when user submits right answer
 const completeExercise = asyncHandler(async (req, res) => {
   const exerciseId = req.params.id;
-  const { userAnswer, timeTaken, userId } = req.body;
+  const userId=req.user._id
+  const { userAnswer, timeTaken } = req.body;
 
   try {
     // Retrieve the exercise and user objects
@@ -61,7 +62,7 @@ const completeExercise = asyncHandler(async (req, res) => {
 });
 
 const getCompletedExercisesByUser = asyncHandler(async (req, res) => {
-  const userId = req.query.id; 
+  const userId = req.user._id; 
 
   try {
     // Find all Score records with the given user ID

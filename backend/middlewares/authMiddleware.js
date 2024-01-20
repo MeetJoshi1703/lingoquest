@@ -3,14 +3,14 @@ import asyncHandler from "./asyncHandler.js";
 import User from "../models/userModel.js";
 
 const protect = asyncHandler(async (req,res,next)=>{
-    let token;
+    
 
     //Read JWT from cookie
-    token = req.cookies.jwt;
+    const token = req.cookies.token;
 
     if(token){
         try {
-            const decoded = jwt.verify(token,process.env.JWT_SECRET);
+            const decoded = jwt.verify(token,process.env.JWT_SECRET);   
             req.user = await User.findById(decoded.userId).select('-password');
             next();
         } catch (error) {

@@ -52,7 +52,7 @@ const registerUser = asyncHandler(async (req,res)=>{
 
         res.status(201).json({
             _id:user._id,
-            username:user.username,
+            name:user.username,
             email:user.email,
             isAdmin:user.isAdmin
         });
@@ -68,7 +68,7 @@ const registerUser = asyncHandler(async (req,res)=>{
 //@route POST/api/users/logout
 //@access Private
 const logoutUser = asyncHandler(async (req,res)=>{
-    res.cookie('jwt','',{
+    res.cookie('token','',{
         httpOnly:true,
         expires: new Date(0)
     });
@@ -97,7 +97,7 @@ const getUsersByProficiency = asyncHandler(async (req, res) => {
 //@route GET/api/users/profile
 //@access Private
 const getUserProfile = asyncHandler(async (req,res)=>{
-    const user = await User.findById(req.query.id);
+    const user = await User.findById(req.user._id);
 
     if(user){
         res.status(200).json({
@@ -119,7 +119,7 @@ const getUserProfile = asyncHandler(async (req,res)=>{
 //@access Private
 const updateUserProfile = asyncHandler(async (req,res)=>{
     
-    const user = await User.findById(req.body.id);
+    const user = await User.findById(req.user._id);
 
     if(user){
         user.username = req.body.name || user.name;
